@@ -1,30 +1,10 @@
 class Project:
 
-    def __init__(self, id=0, title='', size=0, priority=0):
+    def __init__(self, id, title, size, priority):
         self.__id = id
         self.__title = title
         self.__size = size
         self.__priority = priority
-
-    def inputProject(self):
-        print('Please fill in your project details')
-        id_number = int(input('Enter the ID number of your project: '))
-        title = str(input('Enter the title of your project: '))
-        size = int(input('Enter the number of pages: '))
-        priority_number = int(input('Enter the priority level of the project: '))
-
-        self.__id = id_number
-        self.__title = title
-        self.__size = size
-        self.__priority = priority_number
-
-        write_file = open("InputProjectFile.txt","a")
-        write_file.write(str(self.__id) + ', ')
-        write_file.write(str(self.__title) + ', ')
-        write_file.write(str(self.__size) + ', ')
-        write_file.write(str(self.__priority))
-        write_file.write('\n')
-        write_file.close()
 
     def get_id(self):
         return self.__id
@@ -39,9 +19,40 @@ class Project:
         return self.__priority
 
 
+class ProjectCollection:
+
+    project_dictionary = {}
+
+    def __init__ (self):
+        pass
+
+    def add_project(self, project_id, project_object):
+        self.project_dictionary[project_id] = project_object
+
+
+def input_project():
+
+    print('Please fill in your project details')
+    id_number = int(input('Enter the ID number of your project: '))
+    title = str(input('Enter the title of your project: '))
+    size = int(input('Enter the number of pages: '))
+    priority_number = int(input('Enter the priority level of the project: '))
+
+    project = Project(id_number, title, size, priority_number)
+    project_collection = ProjectCollection()
+
+    project_collection.add_project(project.get_id(), project)
+
+    write_file = open("InputProjectFile.txt", "a")
+    write_file.write(str(project.get_id()) + ', ')
+    write_file.write(str(project.get_title()) + ', ')
+    write_file.write(str(project.get_size()) + ', ')
+    write_file.write(str(project.get_priority()))
+    write_file.write('\n')
+    write_file.close()
+
 def menu():
     try:
-        project = Project()
         while True:
             print('Menu:')
             print('[1] Input Project Details')
@@ -56,16 +67,16 @@ def menu():
             print('[5] Exit')
             choice = int(input('Enter your choice: '))
             if choice == 1:
-                project.inputProject()
+                input_project()
             elif choice == 2:
-                print()
+                view_project()
             elif choice == 3:
                 print()
             elif choice == 4:
                 print()
             elif choice == 5:
                 break
-    except:
+    except ValueError:
         print('Invalid Entry')
 
 
