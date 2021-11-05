@@ -68,6 +68,5 @@ def menu():
     except:
         print('Invalid Entry')
 
-
 if __name__ == "__main__":
     menu()
