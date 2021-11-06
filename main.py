@@ -1,102 +1,130 @@
-class Project:
-
-    def __init__(self, id, title, size, priority):
-        self.__id = id
-        self.__title = title
-        self.__size = size
-        self.__priority = priority
-
-    def get_id(self):
-        return self.__id
-
-    def get_title(self):
-        return self.__title
-
-    def get_size(self):
-        return self.__size
-
-    def get_priority(self):
-        return self.__priority
-
+import os
 
 class ProjectCollection:
 
-    project_dictionary = {}
+    project_queue = []
 
     def __init__ (self):
         pass
 
-    def add_project(self, project_id, project_object):
-        self.project_dictionary[project_id] = project_object
+    def retrieve_projects(self):
+        project_file = open("InputProjectFile.txt", "r")
+        
+        self.project_queue.clear()
+
+        for file_line in project_file:
+            id,title,size,priority = file_line.split(", ")
+            
+            self.project_queue.append([id, title, size, priority])
+
+        project_file.close()
+    
+    def sort_project_queue(self):
+        self.project_queue = sorted(self.project_queue, key = lambda attribute: (attribute[3], attribute[2]))
+
+    def print_projects(self):
+        for projects in self.project_queue:
+            print(projects)
+
+    def schedule_exists(self):
+        if not self.project_queue:
+            return False
+        else:
+            return True
 
     def search_project(self, project_key):
         print(self.project_dictionary[project_key])
 
+class Navigation:
 
-def input_project():
+    def __init__ (self, given_project_queue):
+        self.project_queue = given_project_queue
+    
+    def menu(self):
+        project_list = ProjectCollection()
 
-    print('Please fill in your project details')
-    id_number = int(input('Enter the ID number of your project: '))
-    title = str(input('Enter the title of your project: '))
-    size = int(input('Enter the number of pages: '))
-    priority_number = int(input('Enter the priority level of the project: '))
+        try:
+            while True:
+                print('Menu:')
+                print('[1] Input Project Details')
+                print('[2]. View Projects')
+                print('[3] Schedule Projects')
+                print('[4] Get a Project')
+                print('[5] Exit')
 
-    project = Project(id_number, title, size, priority_number)
-    project_collection = ProjectCollection()
+                choice = int(input('Enter your choice: '))
+                if choice == 1:
+                    self.input_project()
+                
+                elif choice == 2:
+                    self.view_table()
+                
+                elif choice == 3:
+                    self.schedule_projects_submenu()
+                    
+                elif choice == 4:
+                    pass
+                
+                elif choice == 5:
+                    break
+        
+        except ValueError:
+            print('Invalid Entry')
 
-    project_collection.add_project(project.get_id(), project)
+    def input_project(self):
 
-    write_file = open("InputProjectFile.txt", "a")
-    write_file.write(str(project.get_id()) + ', ')
-    write_file.write(str(project.get_title()) + ', ')
-    write_file.write(str(project.get_size()) + ', ')
-    write_file.write(str(project.get_priority()))
-    write_file.write('\n')
-    write_file.close()
+        print('Please fill in your project details')
+        id_number = int(input('Enter the ID number of your project: '))
+        title = str(input('Enter the title of your project: '))
+        size = int(input('Enter the number of pages: '))
+        priority_number = int(input('Enter the priority level of the project: '))
 
+        write_file = open("InputProjectFile.txt", "a")
+        write_file.write(str(project.get_id()) + ', ')
+        write_file.write(str(project.get_title()) + ', ')
+        write_file.write(str(project.get_size()) + ', ')
+        write_file.write(str(project.get_priority()))
+        write_file.write('\n')
+        write_file.close()
 
-def view_table():
-    project_collection = ProjectCollection()
-    print('[a] One Project')
-    print('[b] Completed')
-    print('[c] All Projects')
-    choice = str(input('Enter your choice: '))
-    if choice == 'a':
-        key = int(input('Enter the ID number: '))
-        project_collection.search_project(key)
-    elif choice == 'b':
-        print('b')
-    elif choice == 'c':
-        print('c')
+    def view_table(self):
+        project_collection = ProjectCollection()
+        print('[a] One Project')
+        print('[b] Completed')
+        print('[c] All Projects')
+        choice = str(input('Enter your choice: '))
+        if choice == 'a':
+            key = int(input('Enter the ID number: '))
+            project_collection.search_project(key)
+        elif choice == 'b':
+            print('b')
+        elif choice == 'c':
+            print('c')
 
+    def schedule_projects_submenu(self):
+        print("\t[a] Create Schedule")
+        print("\t[b] View Updated Schedule")
 
-def menu():
-    try:
-        while True:
-            print('Menu:')
-            print('[1] Input Project Details')
-            print('[2]. View Projects')
-            print('\t [1] One Project')
-            print('\t [2] Completed Projects')
-            print('\t [3] All Projects')
-            print('[3] Schedule Projects')
-            print('\t [1] Create Schedule')
-            print('\t [2] View Schedule')
-            print('[4] Get a Project')
-            print('[5] Exit')
-            choice = int(input('Enter your choice: '))
-            if choice == 1:
-                input_project()
-            elif choice == 2:
-                view_table()
-            elif choice == 3:
-                print()
-            elif choice == 4:
-                print()
-            elif choice == 5:
-                break
-    except ValueError:
-        print('Invalid Entry')
+        choice = str(input("Enter your choice: "))
+
+        if (choice == "a"):
+            self.project_queue.retrieve_projects()
+            self.project_queue.sort_project_queue()
+
+        elif (choice == "b"):
+            if self.project_queue.schedule_exists():
+                self.project_queue.print_projects()
+            else:
+                choice = input("No Existing Schedule. Do you want to create a schedule?(Y|N): ")
+                if choice == "Y":
+                    self.project_queue.retrieve_projects()
+                    self.project_queue.sort_project_queue()
+
+        else: 
+            print("Invalid Choice")
+
 
 if __name__ == "__main__":
-    menu()
+    project_queue = ProjectCollection()
+    main_menu = Navigation(project_queue)
+    main_menu.menu()
