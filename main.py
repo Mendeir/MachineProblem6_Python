@@ -13,7 +13,7 @@ class ProjectCollection:
         self.project_queue.clear()
 
         for file_line in project_file:
-            id,title,size,priority = file_line.split(", ")
+            id, title, size, priority = file_line.split(", ")
             
             self.project_queue.append([id, title, size, priority])
 
@@ -31,9 +31,6 @@ class ProjectCollection:
             return False
         else:
             return True
-
-    def search_project(self, project_key):
-        print(self.project_dictionary[project_key])
 
 class Navigation:
 
@@ -54,10 +51,10 @@ class Navigation:
 
                 choice = int(input('Enter your choice: '))
                 if choice == 1:
-                    self.input_project()
+                    self.input_project_submenu()
                 
                 elif choice == 2:
-                    self.view_table()
+                    self.view_projects_submenu()
                 
                 elif choice == 3:
                     self.schedule_projects_submenu()
@@ -71,7 +68,8 @@ class Navigation:
         except ValueError:
             print('Invalid Entry')
 
-    def input_project(self):
+
+    def input_project_submenu(self):
 
         print('Please fill in your project details')
         id_number = int(input('Enter the ID number of your project: '))
@@ -80,26 +78,51 @@ class Navigation:
         priority_number = int(input('Enter the priority level of the project: '))
 
         write_file = open("InputProjectFile.txt", "a")
-        write_file.write(str(project.get_id()) + ', ')
-        write_file.write(str(project.get_title()) + ', ')
-        write_file.write(str(project.get_size()) + ', ')
-        write_file.write(str(project.get_priority()))
+        write_file.write(str(id_number) + ', ')
+        write_file.write(str(title) + ', ')
+        write_file.write(str(size) + ', ')
+        write_file.write(str(priority_number))
         write_file.write('\n')
         write_file.close()
 
-    def view_table(self):
-        project_collection = ProjectCollection()
-        print('[a] One Project')
-        print('[b] Completed')
-        print('[c] All Projects')
+    def view_projects_submenu(self):
+        print('\t[a] One Project')
+        print('\t[b] Completed')
+        print('\t[c] All Projects')
         choice = str(input('Enter your choice: '))
         if choice == 'a':
-            key = int(input('Enter the ID number: '))
-            project_collection.search_project(key)
+            try:
+                key = int(input('Enter the ID number: '))
+                file = open('InputProjectFile.txt', 'r')
+                for x in file:
+                    if str(key) == x[0]:
+                        print(x)
+                file.close()
+            except FileNotFoundError:
+                print('File path not found')
+
         elif choice == 'b':
-            print('b')
+            print('Completed Projects:')
+            try:
+                completed_projects = open('InputProjectFile.txt', 'r')
+                for i in completed_projects:
+                    print(i)
+                completed_projects.close()
+            except FileNotFoundError:
+                print('File path not found')
+
         elif choice == 'c':
-            print('c')
+            print('All Projects:')
+            try:
+                all_projects = open('InputProjectFile.txt', 'r')
+                print('All Projects:')
+                for i in all_projects:
+                    print(i)
+                all_projects.close()
+            except FileNotFoundError:
+                print('File path not found')
+        else:
+            print('Invalid Choice')
 
     def schedule_projects_submenu(self):
         print("\t[a] Create Schedule")
