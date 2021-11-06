@@ -29,6 +29,9 @@ class ProjectCollection:
     def add_project(self, project_id, project_object):
         self.project_dictionary[project_id] = project_object
 
+    def search_project(self, project_key):
+        print(self.project_dictionary[project_key])
+
 
 def input_project():
 
@@ -51,6 +54,22 @@ def input_project():
     write_file.write('\n')
     write_file.close()
 
+
+def view_table():
+    project_collection = ProjectCollection()
+    print('[a] One Project')
+    print('[b] Completed')
+    print('[c] All Projects')
+    choice = str(input('Enter your choice: '))
+    if choice == 'a':
+        key = int(input('Enter the ID number: '))
+        project_collection.search_project(key)
+    elif choice == 'b':
+        print('b')
+    elif choice == 'c':
+        print('c')
+
+
 def menu():
     try:
         while True:
@@ -69,7 +88,7 @@ def menu():
             if choice == 1:
                 input_project()
             elif choice == 2:
-                view_project()
+                view_table()
             elif choice == 3:
                 print()
             elif choice == 4:
