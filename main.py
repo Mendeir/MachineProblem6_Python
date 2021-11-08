@@ -8,6 +8,12 @@ class ProjectCollection:
         pass
 
     def retrieve_projects(self):
+        """
+            Retrieve projects data from a file.
+            Put retrieved data into a queue.
+            Arranged by id, title, size, priority.
+        """
+
         project_file = open("InputProjectFile.txt", "r")
         
         self.project_queue.clear()
@@ -19,14 +25,29 @@ class ProjectCollection:
 
         project_file.close()
     
+
     def sort_project_queue(self):
+        """
+            Sort project queue into ascending order.
+            Sort by priority first, then size.
+        """
+
         self.project_queue = sorted(self.project_queue, key = lambda attribute: (attribute[3], attribute[2]))
 
     def print_projects(self):
+        """
+            Print projects queue
+        """
+
         for projects in self.project_queue:
             print(projects)
 
-    def schedule_exists(self):
+    def schedule_exists(self) -> bool:
+        """
+            Returns true if a project queue exist.
+            If not, returns false
+        """
+
         if not self.project_queue:
             return False
         else:
@@ -34,11 +55,13 @@ class ProjectCollection:
 
 class Navigation:
 
-    def __init__ (self, given_project_queue):
+    def __init__ (self, given_project_queue: ProjectCollection):
         self.project_queue = given_project_queue
-    
+
     def menu(self):
-        project_list = ProjectCollection()
+        """
+            Display the menu and get the user choice.
+        """
 
         try:
             while True:
@@ -125,6 +148,12 @@ class Navigation:
             print('Invalid Choice')
 
     def schedule_projects_submenu(self):
+        """
+            Submenu for the Schedule Projects.
+            Prompts for user input.
+        """
+        os.system("cls")
+        print("Schedule Projects")
         print("\t[a] Create Schedule")
         print("\t[b] View Updated Schedule")
 
