@@ -152,7 +152,7 @@ class Navigation:
             try:
                 all_projects = open('InputProjectFile.txt', 'r')
 
-                # This will store each line inside the text file into the list
+                # This will store each line inside the text file into the list.
                 l = []
                 for f in all_projects:
                     l.append(f.split(", "))
