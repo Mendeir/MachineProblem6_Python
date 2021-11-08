@@ -1,2 +1,2 @@
-1, hello, 24, 1
-2, leevl, 12, 1
+1, Python, 50, 1
+2, Java, 50, 2

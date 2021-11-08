@@ -71,21 +71,46 @@ class Navigation:
 
     def input_project_submenu(self):
 
+        """
+        This method will ask the user to input a project.
+        Each project entered by the user will automatically be written in the 'InputProjectFile.txt' file.
+        """
+
+        # Variable to store the size of the file
+        filesize = os.path.getsize("InputProjectFile.txt")
+
         print('Please fill in your project details')
         id_number = int(input('Enter the ID number of your project: '))
         title = str(input('Enter the title of your project: '))
         size = int(input('Enter the number of pages: '))
         priority_number = int(input('Enter the priority level of the project: '))
 
-        write_file = open("InputProjectFile.txt", "a")
-        write_file.write(str(id_number) + ', ')
-        write_file.write(str(title) + ', ')
-        write_file.write(str(size) + ', ')
-        write_file.write(str(priority_number))
-        write_file.write('\n')
-        write_file.close()
+        # Check if the file is empty to use first the 'w' for write mode then 'a' for append mode if not
+        if filesize - 2 == 0:
+
+            write_file = open("InputProjectFile.txt", "w")
+            write_file.write(str(id_number) + ', ')
+            write_file.write(str(title) + ', ')
+            write_file.write(str(size) + ', ')
+            write_file.write(str(priority_number))
+            write_file.write('\n')
+            write_file.close()
+        else:
+            write_file = open("InputProjectFile.txt", "a")
+            write_file.write(str(id_number) + ', ')
+            write_file.write(str(title) + ', ')
+            write_file.write(str(size) + ', ')
+            write_file.write(str(priority_number))
+            write_file.write('\n')
+            write_file.close()
 
     def view_projects_submenu(self):
+
+        """
+        This method will print the user's desire to see inside the copy typing projects
+        The method can return single project, completed projects and all projects received
+        """
+
         print('\t[a] One Project')
         print('\t[b] Completed')
         print('\t[c] All Projects')
@@ -93,10 +118,18 @@ class Navigation:
         if choice == 'a':
             try:
                 key = int(input('Enter the ID number: '))
+                print("ID Number : Title       : Size : Priority ")
                 file = open('InputProjectFile.txt', 'r')
-                for x in file:
-                    if str(key) == x[0]:
-                        print(x)
+
+                # This will store each line inside the text file into the list
+                l = []
+                for f in file:
+                    l.append(f.split(", "))
+                # Printing the project's details
+                print(l[0][0], " " * (8 - len(l[0][0])), ":",
+                      l[0][1], " " * (10 - len(l[0][1])), ":",
+                      l[0][2], " " * (3 - len(l[0][2])), ":",
+                      l[0][3])
                 file.close()
             except FileNotFoundError:
                 print('File path not found')
@@ -113,11 +146,23 @@ class Navigation:
 
         elif choice == 'c':
             print('All Projects:')
+            print('')
+            print("ID Number : Title       : Size : Priority ")
+            print()
             try:
                 all_projects = open('InputProjectFile.txt', 'r')
-                print('All Projects:')
-                for i in all_projects:
-                    print(i)
+
+                # This will store each line inside the text file into the list
+                l = []
+                for f in all_projects:
+                    l.append(f.split(", "))
+
+                # Printing each line of all the projects received
+                for i in l:
+                    print(i[0], " " * (8 - len(i[0])), ":",
+                          i[1], " " * (10 - len(i[1])), ":",
+                          i[2], " " * (3 - len(i[2])), ":",
+                          i[3])
                 all_projects.close()
             except FileNotFoundError:
                 print('File path not found')
