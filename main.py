@@ -8,25 +8,50 @@ class ProjectCollection:
         pass
 
     def retrieve_projects(self):
-        project_file = open("InputProjectFile.txt", "r")
-        
-        self.project_queue.clear()
+        """
+            Retrieve projects data from a file.
+            Put retrieved data into a queue.
+            Arranged by id, title, size, priority.
+        """
 
-        for file_line in project_file:
-            id, title, size, priority = file_line.split(", ")
+        try:
+            project_file = open("InputProjectFile.txt", "r")
             
-            self.project_queue.append([id, title, size, priority])
+            self.project_queue.clear()
 
-        project_file.close()
+            for file_line in project_file:
+                id, title, size, priority = file_line.split(", ")
+                
+                self.project_queue.append([id, title, size, priority])
+
+            project_file.close()
+            
+        except FileNotFoundError:
+            print("File path not found.")
     
+
     def sort_project_queue(self):
+        """
+            Sort project queue into ascending order.
+            Sort by priority first, then size.
+        """
+
         self.project_queue = sorted(self.project_queue, key = lambda attribute: (attribute[3], attribute[2]))
 
     def print_projects(self):
+        """
+            Print projects queue
+        """
+
         for projects in self.project_queue:
             print(projects)
 
-    def schedule_exists(self):
+    def schedule_exists(self) -> bool:
+        """
+            Returns true if a project queue exist.
+            If not, returns false
+        """
+
         if not self.project_queue:
             return False
         else:
@@ -34,22 +59,28 @@ class ProjectCollection:
 
 class Navigation:
 
-    def __init__ (self, given_project_queue):
+    def __init__ (self, given_project_queue: ProjectCollection):
         self.project_queue = given_project_queue
-    
-    def menu(self):
-        project_list = ProjectCollection()
 
+    def menu(self):
+        """
+            Display the menu and get the user choice.
+        """
+        
         try:
             while True:
-                print('Menu:')
+                os.system("cls")
+                self.display_header("Menu")
                 print('[1] Input Project Details')
                 print('[2]. View Projects')
                 print('[3] Schedule Projects')
                 print('[4] Get a Project')
                 print('[5] Exit')
 
+                print("")
                 choice = int(input('Enter your choice: '))
+                print("")
+
                 if choice == 1:
                     self.input_project_submenu()
                 
@@ -125,27 +156,67 @@ class Navigation:
             print('Invalid Choice')
 
     def schedule_projects_submenu(self):
+        """
+            Submenu for the Schedule Projects.
+            Prompts for user input.
+        """
+    
+        os.system("cls")
+        self.display_header("Create Schedule")
         print("\t[a] Create Schedule")
         print("\t[b] View Updated Schedule")
 
+        print("")
+
         choice = str(input("Enter your choice: "))
+        print("")
+
+        choice = choice.lower()
 
         if (choice == "a"):
             self.project_queue.retrieve_projects()
             self.project_queue.sort_project_queue()
+            print("Schedule Successfully Created!")
+            self.prompt_key()
 
         elif (choice == "b"):
             if self.project_queue.schedule_exists():
                 self.project_queue.print_projects()
+                self.prompt_key()
+
             else:
                 choice = input("No Existing Schedule. Do you want to create a schedule?(Y|N): ")
-                if choice == "Y":
+                choice = choice.lower()
+
+                if choice == "y":
                     self.project_queue.retrieve_projects()
                     self.project_queue.sort_project_queue()
+                    print("Schedule Successfully Created!")
+                    self.prompt_key()
+
+                elif choice == "n":
+                    print("No schedule created yet.")
+                    self.prompt_key()
+                
+                else:
+                    print("Invalid choice.")
+                    self.prompt_key()
 
         else: 
             print("Invalid Choice")
+            self.prompt_key()
+    
+    def display_header(self, word):
+        center = 14 - (len(word) // 2)
+        spaces = int(center) * " "
+        remaining_spaces = int(28 - (len(spaces) + len(word))) * " "
 
+        print("*" * 30)
+        print(f"*{spaces}{word}{remaining_spaces}*")
+        print("*" * 30)
+
+    def prompt_key(self):
+        input("Press enter key to continue...")
 
 if __name__ == "__main__":
     project_queue = ProjectCollection()
