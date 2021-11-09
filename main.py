@@ -201,9 +201,8 @@ class Navigation:
 
         try:
             key = int(input('Enter the ID number: '))
-            print("ID Number : Title       : Size : Priority ")
             one_file = open('InputProjectFile.txt', 'r')
-
+            temp = False
             # This will store each line inside the text file into the list
             file_list = []
             for f in one_file:
@@ -212,13 +211,16 @@ class Navigation:
             # Search the entered ID number in the list.
             for l in file_list:
                 if str(key) == l[0][0]:
-
+                    temp = True
                     # Printing the project details
+                    print("ID Number : Title       : Size : Priority ")
                     print(l[0], " " * (8 - len(l[0])), ":",
                           l[1], " " * (10 - len(l[1])), ":",
                           l[2], " " * (3 - len(l[2])), ":",
                           l[3])
 
+            if not temp:
+                print('ID number not found.')
             one_file.close()
 
             print('Press any key to continue.')
@@ -236,7 +238,7 @@ class Navigation:
 
         print('Completed Projects:')
         try:
-            completed_projects = open('InputProjectFile.txt', 'r')
+            completed_projects = open('CompletedProjects.txt', 'r')
 
             # Store each line of project in a list.
             file_list = []
