@@ -65,11 +65,6 @@ class ProjectCollection:
         write_file.close()
         self.project_queue.pop(0)
 
-
-
-
-
-
 class Navigation:
 
     def __init__ (self, given_project_queue: ProjectCollection):
@@ -123,7 +118,7 @@ class Navigation:
         This method will ask the user to input a project.
         Each project entered by the user will automatically be written in the 'InputProjectFile.txt' file.
         """
-        self.clear_screen()
+        
         self.display_header("Input Project Details")
 
         print("")
@@ -346,16 +341,6 @@ class Navigation:
         else: 
             print("Invalid Choice")
             self.prompt_key()
-    
-    def display_header(self, word):
-        """
-            Display a box typed header from given word.
-            30 word limit.
-        """
-        center = 14 - (len(word) // 2)
-        spaces = int(center) * " "
-        remaining_spaces = int(28 - (len(spaces) + len(word))) * " "
-
 
     def get_project_submenu(self):
 
@@ -366,14 +351,14 @@ class Navigation:
         if self.project_queue.schedule_exists():
             self.project_queue.print_projects()
         
-        pass
+        self.prompt_key()
 
-
-     def display_header(self, word):
+    def display_header(self, word):
         """
             Display a box typed header from given word.
             30 word limit.
         """
+
         center = 14 - (len(word) // 2)
         spaces = int(center) * " "
         remaining_spaces = int(28 - (len(spaces) + len(word))) * " "
