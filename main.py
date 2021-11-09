@@ -260,7 +260,6 @@ class Navigation:
 
             completed_projects.close()
 
-            print('Press any key to continue.')
 
         except FileNotFoundError:
             print('File path not found')
@@ -290,8 +289,6 @@ class Navigation:
 
             all_projects.close()
 
-            print('Press any key to continue.')
-
         except FileNotFoundError:
             print('File path not found')
 
@@ -300,12 +297,15 @@ class Navigation:
         """
         This method will print a text base table format to display projects.
         """
+
         print("ID Number : Title       : Size : Priority ")
+
         for i in list_project:
             print(i[0], " " * (8 - len(i[0])), ":",
                   i[1], " " * (10 - len(i[1])), ":",
                   i[2], " " * (3 - len(i[2])), ":",
                   i[3], end="")
+        print("")
 
     def schedule_projects_submenu(self):
         """
