@@ -1,4 +1,5 @@
 import os
+from os import system, name
 
 class ProjectCollection:
 
@@ -375,12 +376,12 @@ class Navigation:
             Clears the screen
         """
         # Windows
-        if os == 'nt': 
-            _ = os.system('cls') 
+        if name == 'nt': 
+            _ = system('cls') 
 
         # Unix
         else: 
-            _ = os.system('clear') 
+            _ = system('clear') 
 
 if __name__ == "__main__":
     project_queue = ProjectCollection()
