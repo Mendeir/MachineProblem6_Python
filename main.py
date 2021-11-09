@@ -359,11 +359,14 @@ class Navigation:
 
     def get_project_submenu(self):
 
-            self.project_queue.removetop_project()
-            print('\t Topmost project from the queue is removed')
-            print('\t Please click the CompletedProjects.txt')
-            if self.project_queue.schedule_exists():
-                self.project_queue.print_projects()
+        self.project_queue.removetop_project()
+        print('\t Topmost project from the queue is removed')
+        print('\t Please click the CompletedProjects.txt')
+
+        if self.project_queue.schedule_exists():
+            self.project_queue.print_projects()
+        
+        pass
 
 
      def display_header(self, word):
@@ -382,7 +385,7 @@ class Navigation:
     def prompt_key(self):
         input("Press enter key to continue...")
     
-    def clear_screen(self1): 
+    def clear_screen(self): 
         """
             Clears the screen
         """
