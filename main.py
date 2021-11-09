@@ -42,9 +42,13 @@ class ProjectCollection:
         """
             Print projects queue
         """
-
+        print("ID Number : Title       : Size : Priority ")
+        
         for projects in self.project_queue:
-            print(projects)
+            print(projects[0], " " * (8 - len(projects[0])), ":",
+                  projects[1], " " * (10 - len(projects[1])), ":",
+                  projects[2], " " * (3 - len(projects[2])), ":", 
+                  projects[3], end="")
 
     def schedule_exists(self) -> bool:
         """
