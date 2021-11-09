@@ -69,10 +69,10 @@ class Navigation:
         
         try:
             while True:
-                os.system("cls")
+                self.clear_screen()
                 self.display_header("Menu")
                 print('[1] Input Project Details')
-                print('[2]. View Projects')
+                print('[2] View Projects')
                 print('[3] Schedule Projects')
                 print('[4] Get a Project')
                 print('[5] Exit')
@@ -82,16 +82,19 @@ class Navigation:
                 print("")
 
                 if choice == 1:
+                    self.clear_screen()
                     self.input_project_submenu()
                 
                 elif choice == 2:
+                    self.clear_screen()
                     self.view_projects_submenu()
                 
                 elif choice == 3:
+                    self.clear_screen()
                     self.schedule_projects_submenu()
                     
                 elif choice == 4:
-                    pass
+                    self.clear_screen()
                 
                 elif choice == 5:
                     break
@@ -106,7 +109,10 @@ class Navigation:
         This method will ask the user to input a project.
         Each project entered by the user will automatically be written in the 'InputProjectFile.txt' file.
         """
+        self.clear_screen()
+        self.display_header("Input Project Details")
 
+        print("")
         # Variable to store the size of the file
         filesize = os.path.getsize("InputProjectFile.txt")
 
@@ -144,17 +150,27 @@ class Navigation:
         """
         This method will print the user's desire to see inside the copy typing based on user's selected from the menu.
         """
+        self.display_header("View Projects")
 
         print('\t[a] One Project')
         print('\t[b] Completed')
         print('\t[c] All Projects')
         choice = str(input('Enter your choice: '))
         if choice == 'a':
+            self.clear_screen()
             self.one_project_submenu()
+            self.prompt_key()
+
         elif choice == 'b':
+            self.clear_screen()
             self.completed_projects_submenu()
+            self.prompt_key()
+
         elif choice == 'c':
+            self.clear_screen()
             self.all_projects_submenu()
+            self.prompt_key()
+
         else:
             print('Invalid Choice')
 
@@ -164,6 +180,10 @@ class Navigation:
         """
         This method will display a single project copy typed based on the user's entered ID number.
         """
+
+        self.display_header("View One Project")
+        print("")
+
         try:
             key = int(input('Enter the ID number: '))
             print("ID Number : Title       : Size : Priority ")
@@ -196,6 +216,9 @@ class Navigation:
         """
         This method will display all the completed projects from the text file.
         """
+        self.display_header("View Completed Projects")
+        print()
+
         print('Completed Projects:')
         try:
             completed_projects = open('InputProjectFile.txt', 'r')
@@ -221,6 +244,9 @@ class Navigation:
         This method will display all the projects received.
         """
 
+        self.display_header("View All Projects")
+        print("")
+
         print('All Projects:')
         print('')
         print()
@@ -242,8 +268,6 @@ class Navigation:
         except FileNotFoundError:
             print('File path not found')
 
-
-
     def text_based_display_submenu(self, list_project):
 
         """
@@ -254,8 +278,7 @@ class Navigation:
             print(i[0], " " * (8 - len(i[0])), ":",
                   i[1], " " * (10 - len(i[1])), ":",
                   i[2], " " * (3 - len(i[2])), ":",
-                  i[3])
-
+                  i[3], end="")
 
     def schedule_projects_submenu(self):
         """
@@ -263,7 +286,6 @@ class Navigation:
             Prompts for user input.
         """
     
-        os.system("cls")
         self.display_header("Create Schedule")
         print("\t[a] Create Schedule")
         print("\t[b] View Updated Schedule")
@@ -309,6 +331,10 @@ class Navigation:
             self.prompt_key()
     
     def display_header(self, word):
+        """
+            Display a box typed header from given word.
+            30 word limit.
+        """
         center = 14 - (len(word) // 2)
         spaces = int(center) * " "
         remaining_spaces = int(28 - (len(spaces) + len(word))) * " "
@@ -319,6 +345,18 @@ class Navigation:
 
     def prompt_key(self):
         input("Press enter key to continue...")
+    
+    def clear_screen(self1): 
+        """
+            Clears the screen
+        """
+        # Windows
+        if os == 'nt': 
+            _ = os.system('cls') 
+
+        # Unix
+        else: 
+            _ = os.system('clear') 
 
 if __name__ == "__main__":
     project_queue = ProjectCollection()
