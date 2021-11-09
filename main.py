@@ -28,7 +28,6 @@ class ProjectCollection:
             
         except FileNotFoundError:
             print("File path not found.")
-    
 
     def sort_project_queue(self):
         """
@@ -56,6 +55,20 @@ class ProjectCollection:
             return False
         else:
             return True
+
+    def removetop_project(self):
+
+        write_file = open("CompletedProjects.txt", "a")
+
+        write_file.write(str(self.project_queue[0]))
+        write_file.write('\n')
+        write_file.close()
+        self.project_queue.pop(0)
+
+
+
+
+
 
 class Navigation:
 
@@ -95,6 +108,7 @@ class Navigation:
                     
                 elif choice == 4:
                     self.clear_screen()
+                    self.get_project_submenu()
                 
                 elif choice == 5:
                     break
@@ -144,6 +158,7 @@ class Navigation:
                 write_file.close()
         except IOError:
             print('File not found')
+
 
     def view_projects_submenu(self):
 
@@ -331,6 +346,25 @@ class Navigation:
             self.prompt_key()
     
     def display_header(self, word):
+        """
+            Display a box typed header from given word.
+            30 word limit.
+        """
+        center = 14 - (len(word) // 2)
+        spaces = int(center) * " "
+        remaining_spaces = int(28 - (len(spaces) + len(word))) * " "
+
+
+    def get_project_submenu(self):
+
+            self.project_queue.removetop_project()
+            print('\t Topmost project from the queue is removed')
+            print('\t Please click the CompletedProjects.txt')
+            if self.project_queue.schedule_exists():
+                self.project_queue.print_projects()
+
+
+     def display_header(self, word):
         """
             Display a box typed header from given word.
             30 word limit.
