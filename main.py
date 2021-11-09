@@ -85,30 +85,33 @@ class Navigation:
         size = int(input('Enter the number of pages: '))
         priority_number = int(input('Enter the priority level of the project: '))
 
-        # Check if the file is empty to use first the 'w' for write mode then 'a' for append mode if not
-        if filesize - 2 == 0:
+        # Store each user input inside the 'InputProjectFile.txt' text file.
+        try:
+            # Check if the file is empty to use first the 'w' for write mode then 'a' for append mode if not
+            if filesize - 2 == 0:
 
-            write_file = open("InputProjectFile.txt", "w")
-            write_file.write(str(id_number) + ', ')
-            write_file.write(str(title) + ', ')
-            write_file.write(str(size) + ', ')
-            write_file.write(str(priority_number))
-            write_file.write('\n')
-            write_file.close()
-        else:
-            write_file = open("InputProjectFile.txt", "a")
-            write_file.write(str(id_number) + ', ')
-            write_file.write(str(title) + ', ')
-            write_file.write(str(size) + ', ')
-            write_file.write(str(priority_number))
-            write_file.write('\n')
-            write_file.close()
+                write_file = open("InputProjectFile.txt", "w")
+                write_file.write(str(id_number) + ', ')
+                write_file.write(str(title) + ', ')
+                write_file.write(str(size) + ', ')
+                write_file.write(str(priority_number))
+                write_file.write('\n')
+                write_file.close()
+            else:
+                write_file = open("InputProjectFile.txt", "a")
+                write_file.write(str(id_number) + ', ')
+                write_file.write(str(title) + ', ')
+                write_file.write(str(size) + ', ')
+                write_file.write(str(priority_number))
+                write_file.write('\n')
+                write_file.close()
+        except IOError:
+            print('File not found')
 
     def view_projects_submenu(self):
 
         """
-        This method will print the user's desire to see inside the copy typing projects
-        The method can return single project, completed projects and all projects received
+        This method will print the user's desire to see inside the copy typing based on user's selected from the menu.
         """
 
         print('\t[a] One Project')
@@ -116,58 +119,112 @@ class Navigation:
         print('\t[c] All Projects')
         choice = str(input('Enter your choice: '))
         if choice == 'a':
-            try:
-                key = int(input('Enter the ID number: '))
-                print("ID Number : Title       : Size : Priority ")
-                file = open('InputProjectFile.txt', 'r')
-
-                # This will store each line inside the text file into the list
-                l = []
-                for f in file:
-                    l.append(f.split(", "))
-                # Printing the project's details
-                print(l[0][0], " " * (8 - len(l[0][0])), ":",
-                      l[0][1], " " * (10 - len(l[0][1])), ":",
-                      l[0][2], " " * (3 - len(l[0][2])), ":",
-                      l[0][3])
-                file.close()
-            except FileNotFoundError:
-                print('File path not found')
-
+            self.one_project_submenu()
         elif choice == 'b':
-            print('Completed Projects:')
-            try:
-                completed_projects = open('InputProjectFile.txt', 'r')
-                for i in completed_projects:
-                    print(i)
-                completed_projects.close()
-            except FileNotFoundError:
-                print('File path not found')
-
+            self.completed_projects_submenu()
         elif choice == 'c':
-            print('All Projects:')
-            print('')
-            print("ID Number : Title       : Size : Priority ")
-            print()
-            try:
-                all_projects = open('InputProjectFile.txt', 'r')
-
-                # This will store each line inside the text file into the list.
-                l = []
-                for f in all_projects:
-                    l.append(f.split(", "))
-
-                # Printing each line of all the projects received
-                for i in l:
-                    print(i[0], " " * (8 - len(i[0])), ":",
-                          i[1], " " * (10 - len(i[1])), ":",
-                          i[2], " " * (3 - len(i[2])), ":",
-                          i[3])
-                all_projects.close()
-            except FileNotFoundError:
-                print('File path not found')
+            self.all_projects_submenu()
         else:
             print('Invalid Choice')
+
+
+    def one_project_submenu(self):
+
+        """
+        This method will display a single project copy typed based on the user's entered ID number.
+        """
+        try:
+            key = int(input('Enter the ID number: '))
+            print("ID Number : Title       : Size : Priority ")
+            one_file = open('InputProjectFile.txt', 'r')
+
+            # This will store each line inside the text file into the list
+            file_list = []
+            for f in one_file:
+                file_list.append(f.split(", "))
+
+            # Search the entered ID number in the list.
+            for l in file_list:
+                if str(key) == l[0][0]:
+
+                    # Printing the project details
+                    print(l[0], " " * (8 - len(l[0])), ":",
+                          l[1], " " * (10 - len(l[1])), ":",
+                          l[2], " " * (3 - len(l[2])), ":",
+                          l[3])
+
+            one_file.close()
+
+            print('Press any key to continue.')
+
+        except FileNotFoundError:
+            print('File path not found')
+
+    def completed_projects_submenu(self):
+
+        """
+        This method will display all the completed projects from the text file.
+        """
+        print('Completed Projects:')
+        try:
+            completed_projects = open('InputProjectFile.txt', 'r')
+
+            # Store each line of project in a list.
+            file_list = []
+            for i in completed_projects:
+                file_list.append(i.split(", "))
+
+            # Calling the method to print the list in text-based table format.
+            self.text_based_display_submenu(file_list)
+
+            completed_projects.close()
+
+            print('Press any key to continue.')
+
+        except FileNotFoundError:
+            print('File path not found')
+
+    def all_projects_submenu(self):
+
+        """
+        This method will display all the projects received.
+        """
+
+        print('All Projects:')
+        print('')
+        print()
+        try:
+            all_projects = open('InputProjectFile.txt', 'r')
+
+            # This will store each line inside the text file into the list.
+            file_list = []
+            for f in all_projects:
+                file_list.append(f.split(", "))
+
+            # Printing each line of all the projects received
+            self.text_based_display_submenu(file_list)
+
+            all_projects.close()
+
+            print('Press any key to continue.')
+
+        except FileNotFoundError:
+            print('File path not found')
+
+
+
+    def text_based_display_submenu(self, list_project):
+
+        """
+        This method will print a text base table format to display projects.
+        """
+        print("ID Number : Title       : Size : Priority ")
+        for i in list_project:
+            print(i[0], " " * (8 - len(i[0])), ":",
+                  i[1], " " * (10 - len(i[1])), ":",
+                  i[2], " " * (3 - len(i[2])), ":",
+                  i[3])
+
 
     def schedule_projects_submenu(self):
         print("\t[a] Create Schedule")
