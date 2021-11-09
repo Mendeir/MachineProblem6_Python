@@ -57,14 +57,24 @@ class ProjectCollection:
         else:
             return True
 
-    def removetop_project(self):
 
+
+    def completedproject(self):
+
+        """
+                Delete the uppermost project in Queue
+                Write the Completed Project in a txt file
+                Display The Queue
+        """
+        # Delete the uppermost project in a queue
+        result = self.project_queue.pop(0)
+
+        # Write the deleted uppermost project in a textfile
         write_file = open("CompletedProjects.txt", "a")
-
-        write_file.write(str(self.project_queue[0]))
-        write_file.write('\n')
+        write_file.write(f"{result[0]}, {result[1]}, {result[2]}, {result[3]}")
         write_file.close()
-        self.project_queue.pop(0)
+
+
 
 class Navigation:
 
@@ -345,7 +355,7 @@ class Navigation:
 
     def get_project_submenu(self):
 
-        self.project_queue.removetop_project()
+        self.project_queue.completedproject()
         print('\t Topmost project from the queue is removed')
         print('\t Please click the CompletedProjects.txt')
 
