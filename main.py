@@ -18,7 +18,7 @@ class ProjectCollection:
             self.project_queue.append([id, title, size, priority])
 
         project_file.close()
-    
+
     def sort_project_queue(self):
         self.project_queue = sorted(self.project_queue, key = lambda attribute: (attribute[3], attribute[2]))
 
@@ -31,6 +31,20 @@ class ProjectCollection:
             return False
         else:
             return True
+
+    def removetop_project(self):
+
+        write_file = open("CompletedProjects.txt", "a")
+
+        write_file.write(str(self.project_queue[0]))
+        write_file.write('\n')
+        write_file.close()
+        self.project_queue.pop(0)
+
+
+
+
+
 
 class Navigation:
 
@@ -60,7 +74,7 @@ class Navigation:
                     self.schedule_projects_submenu()
                     
                 elif choice == 4:
-                    pass
+                    self.get_project_submenu()
                 
                 elif choice == 5:
                     break
@@ -84,6 +98,7 @@ class Navigation:
         write_file.write(str(priority_number))
         write_file.write('\n')
         write_file.close()
+
 
     def view_projects_submenu(self):
         print('\t[a] One Project')
@@ -145,6 +160,14 @@ class Navigation:
 
         else: 
             print("Invalid Choice")
+
+    def get_project_submenu(self):
+
+            self.project_queue.removetop_project()
+            print('\t Topmost project from the queue is removed')
+            print('\t Please click the CompletedProjects.txt')
+            if self.project_queue.schedule_exists():
+                self.project_queue.print_projects()
 
 
 if __name__ == "__main__":
