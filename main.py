@@ -12,15 +12,23 @@ class ProjectCollection:
         """
             Retrieve projects data from a file.
             Put retrieved data into a queue.
+            Completed Projects are not put into queue.
             Arranged by id, title, size, priority.
         """
 
         try:
+            completed_file = open("CompletedProjects.txt", "r")
+            completed_list = completed_file.readlines()
+            completed_file.close()
+
             project_file = open("InputProjectFile.txt", "r")
             
             self.project_queue.clear()
 
             for file_line in project_file:
+                if file_line in completed_list:
+                    continue
+
                 id, title, size, priority = file_line.split(", ")
                 
                 self.project_queue.append([id, title, size, priority])
