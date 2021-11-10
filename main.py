@@ -1,5 +1,6 @@
 import os
 from os import system, name
+import time
 
 class ProjectCollection:
 
@@ -12,20 +13,33 @@ class ProjectCollection:
         """
             Retrieve projects data from a file.
             Put retrieved data into a queue.
+            Completed Projects are not put into queue.
             Arranged by id, title, size, priority.
         """
 
         try:
+            completed_file = open("CompletedProjects.txt", "r")
+            completed_list = completed_file.readlines()
+            completed_file.close()
+
             project_file = open("InputProjectFile.txt", "r")
             
             self.project_queue.clear()
 
             for file_line in project_file:
+                if file_line in completed_list:
+                    continue
+
                 id, title, size, priority = file_line.split(", ")
                 
                 self.project_queue.append([id, title, size, priority])
 
             project_file.close()
+
+            if self.schedule_exists():
+                print("Schedule Successfully Created!")
+            else:
+                print("No schedule to be created yet. You completed all the existing project!")
             
         except FileNotFoundError:
             print("File path not found.")
@@ -42,6 +56,10 @@ class ProjectCollection:
         """
             Print projects queue
         """
+
+        if not(self.schedule_exists()):
+            print("All projects have been completed.")
+
         print("ID Number : Title       : Size : Priority ")
         
         for projects in self.project_queue:
@@ -49,6 +67,8 @@ class ProjectCollection:
                   projects[1], " " * (10 - len(projects[1])), ":",
                   projects[2], " " * (3 - len(projects[2])), ":", 
                   projects[3], end="")
+
+        print("")
 
     def schedule_exists(self) -> bool:
         """
@@ -72,6 +92,8 @@ class ProjectCollection:
         """
         # Delete the uppermost project in a queue
         result = self.project_queue.pop(0)
+        print(f'Topmost project from the queue ({result}) is  removed')
+        time.sleep(2)
 
         # Write the deleted uppermost project in a textfile
         write_file = open("CompletedProjects.txt", "a")
@@ -298,7 +320,7 @@ class Navigation:
         This method will print a text base table format to display projects.
         """
 
-        print("ID Number : Title       : Size : Priority ")
+        print("ID Number : Title                      : Size : Priority ")
 
         for i in list_project:
             print(i[0], " " * (8 - len(i[0])), ":",
@@ -327,7 +349,6 @@ class Navigation:
         if (choice == "a"):
             self.project_queue.retrieve_projects()
             self.project_queue.sort_project_queue()
-            print("Schedule Successfully Created!")
             self.prompt_key()
 
         elif (choice == "b"):
@@ -342,7 +363,6 @@ class Navigation:
                 if choice == "y":
                     self.project_queue.retrieve_projects()
                     self.project_queue.sort_project_queue()
-                    print("Schedule Successfully Created!")
                     self.prompt_key()
 
                 elif choice == "n":
@@ -358,13 +378,13 @@ class Navigation:
             self.prompt_key()
 
     def get_project_submenu(self):
-
-        self.project_queue.completedproject()
-        print('\t Topmost project from the queue is removed')
-        print('\t Please click the CompletedProjects.txt')
-
+        self.display_header("Get a Project")
+        
         if self.project_queue.schedule_exists():
+            self.project_queue.completedproject()
             self.project_queue.print_projects()
+        else:
+            print("No projects to be removed.")
         
         self.prompt_key()
 
