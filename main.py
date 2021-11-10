@@ -350,6 +350,8 @@ class Navigation:
             self.prompt_key()
 
         elif (choice == "b"):
+            self.clear_screen()
+            self.display_header("View Updated Schedule")
             if self.project_queue.schedule_exists():
                 self.project_queue.print_projects()
                 self.prompt_key()
