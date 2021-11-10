@@ -255,8 +255,6 @@ class Navigation:
                 print('ID number not found.')
             one_file.close()
 
-            print('Press any key to continue.')
-
         except FileNotFoundError:
             print('File path not found')
 
