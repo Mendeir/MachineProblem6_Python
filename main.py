@@ -60,12 +60,12 @@ class ProjectCollection:
         if not(self.schedule_exists()):
             print("All projects have been completed.")
 
-        print("ID Number : Title       : Size : Priority ")
-        
+        print("ID Number : Title                      : Size : Priority ")
+
         for projects in self.project_queue:
             print(projects[0], " " * (8 - len(projects[0])), ":",
-                  projects[1], " " * (10 - len(projects[1])), ":",
-                  projects[2], " " * (3 - len(projects[2])), ":", 
+                  projects[1], " " * (25 - len(projects[1])), ":",
+                  projects[2], " " * (5 - len(projects[2])), ":",
                   projects[3], end="")
 
         print("")
@@ -245,10 +245,10 @@ class Navigation:
                 if str(key) == l[0][0]:
                     temp = True
                     # Printing the project details
-                    print("ID Number : Title       : Size : Priority ")
+                    print("ID Number : Title                      : Size : Priority ")
                     print(l[0], " " * (8 - len(l[0])), ":",
-                          l[1], " " * (10 - len(l[1])), ":",
-                          l[2], " " * (3 - len(l[2])), ":",
+                          l[1], " " * (25 - len(l[1])), ":",
+                          l[2], " " * (5 - len(l[2])), ":",
                           l[3])
 
             if not temp:
@@ -324,8 +324,8 @@ class Navigation:
 
         for i in list_project:
             print(i[0], " " * (8 - len(i[0])), ":",
-                  i[1], " " * (10 - len(i[1])), ":",
-                  i[2], " " * (3 - len(i[2])), ":",
+                  i[1], " " * (25 - len(i[1])), ":",
+                  i[2], " " * (5 - len(i[2])), ":",
                   i[3], end="")
         print("")
 
