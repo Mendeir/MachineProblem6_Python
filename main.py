@@ -185,6 +185,8 @@ class Navigation:
             title = str(input('Enter the title of your project: '))
             size = int(input('Enter the number of pages: '))
             priority_number = int(input('Enter the priority level of the project: '))
+            print("Project Successfully Added!")
+            self.prompt_key()
 
 
             # Store each user input inside the 'InputProjectFile.txt' text file.
