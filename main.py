@@ -161,35 +161,54 @@ class Navigation:
         print("")
         # Variable to store the size of the file
         filesize = os.path.getsize("InputProjectFile.txt")
+        temp = False
+
+        # Check if the ID Number is repeated
+        check_file = open("InputProjectFile.txt", "r")
+        check_list = []
+
+        for i in check_file:
+            check_list.append(i.split(", "))
+
+        check_file.close()
+
 
         print('Please fill in your project details')
         id_number = int(input('Enter the ID number of your project: '))
-        title = str(input('Enter the title of your project: '))
-        size = int(input('Enter the number of pages: '))
-        priority_number = int(input('Enter the priority level of the project: '))
+        for l in check_list:
+            if str(id_number) == l[0]:
+                temp = True
+        if temp:
+            print('ID Number is already been used.')
+            self.prompt_key()
+        else:
+            title = str(input('Enter the title of your project: '))
+            size = int(input('Enter the number of pages: '))
+            priority_number = int(input('Enter the priority level of the project: '))
 
-        # Store each user input inside the 'InputProjectFile.txt' text file.
-        try:
-            # Check if the file is empty to use first the 'w' for write mode then 'a' for append mode if not
-            if filesize - 2 == 0:
 
-                write_file = open("InputProjectFile.txt", "w")
-                write_file.write(str(id_number) + ', ')
-                write_file.write(str(title) + ', ')
-                write_file.write(str(size) + ', ')
-                write_file.write(str(priority_number))
-                write_file.write('\n')
-                write_file.close()
-            else:
-                write_file = open("InputProjectFile.txt", "a")
-                write_file.write(str(id_number) + ', ')
-                write_file.write(str(title) + ', ')
-                write_file.write(str(size) + ', ')
-                write_file.write(str(priority_number))
-                write_file.write('\n')
-                write_file.close()
-        except IOError:
-            print('File not found')
+            # Store each user input inside the 'InputProjectFile.txt' text file.
+            try:
+                # Check if the file is empty to use first the 'w' for write mode then 'a' for append mode if not
+                if filesize - 2 == 0:
+
+                    write_file = open("InputProjectFile.txt", "w")
+                    write_file.write(str(id_number) + ', ')
+                    write_file.write(str(title) + ', ')
+                    write_file.write(str(size) + ', ')
+                    write_file.write(str(priority_number))
+                    write_file.write('\n')
+                    write_file.close()
+                else:
+                    write_file = open("InputProjectFile.txt", "a")
+                    write_file.write(str(id_number) + ', ')
+                    write_file.write(str(title) + ', ')
+                    write_file.write(str(size) + ', ')
+                    write_file.write(str(priority_number))
+                    write_file.write('\n')
+                    write_file.close()
+            except IOError:
+                print('File not found')
 
 
     def view_projects_submenu(self):
@@ -235,12 +254,14 @@ class Navigation:
             key = int(input('Enter the ID number: '))
             one_file = open('InputProjectFile.txt', 'r')
             temp = False
+
             # This will store each line inside the text file into the list
             file_list = []
             for f in one_file:
                 file_list.append(f.split(", "))
 
             # Search the entered ID number in the list.
+
             for l in file_list:
                 if str(key) == l[0]:
                     temp = True
@@ -253,6 +274,7 @@ class Navigation:
 
             if not temp:
                 print('ID number not found.')
+
             one_file.close()
 
         except FileNotFoundError:
@@ -318,15 +340,17 @@ class Navigation:
         This method will print a text base table format to display projects.
         """
 
-        print("ID Number : Title                      : Size : Priority ")
 
-        for i in list_project:
-            print(i[0], " " * (8 - len(i[0])), ":",
-                  i[1], " " * (25 - len(i[1])), ":",
-                  i[2], " " * (3 - len(i[2])), ":",
-                  i[3], end="")
-        print("")
-
+        if list_project:
+            print("ID Number : Title                      : Size : Priority ")
+            for i in list_project:
+                print(i[0], " " * (8 - len(i[0])), ":",
+                      i[1], " " * (25 - len(i[1])), ":",
+                      i[2], " " * (3 - len(i[2])), ":",
+                      i[3], end="")
+            print("")
+        else:
+            print('The queue is empty')
     def schedule_projects_submenu(self):
         """
             Submenu for the Schedule Projects.
@@ -338,7 +362,7 @@ class Navigation:
         print("\t[b] View Updated Schedule")
 
         print("")
-
+        
         choice = str(input("Enter your choice: "))
         print("")
 
