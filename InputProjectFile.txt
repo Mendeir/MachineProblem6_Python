@@ -1,0 +1,20 @@
+1001, Aurora, 70, 3
+1002, Cold Fusion, 100, 6
+1003, Enter Coding, 50, 1
+1004, Honeycomb, 150, 6
+1005, Monte Mirage, 250, 8
+1006, Quicksilver, 300, 3
+1007, Software Chasers, 410, 2
+1008, Bitter Laser, 300, 5
+1009, Colossus, 500, 1
+1010, Gob Geeklords, 380, 7
+1011, Impact Training, 180, 8
+1012, Mustangs, 500, 3
+1013, RuddyRex, 260, 2
+1014, The Network, 70, 5
+1015, Celestial Interface, 50, 7
+1016, Comic Maroon, 150, 8 
+1017, Golden Bulls, 300, 9
+1018, Kodiak, 120, 10
+1019, Prime Seven, 300, 9
+1020, Severe, 450, 5
