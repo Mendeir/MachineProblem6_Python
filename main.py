@@ -318,8 +318,6 @@ class Navigation:
         print("")
 
         print('All Projects:')
-        print('')
-        print()
         try:
             all_projects = open('InputProjectFile.txt', 'r')
 
